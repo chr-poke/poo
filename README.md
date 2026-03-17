@@ -1,4 +1,12 @@
-# Nu primesc notă pentru că nu am pus titlu și descriere
+# Pokémon Ruby/Sapphire Route 101
+
+Professor Birch is in trouble! Choose your starter Pokémon to rescue him and explore Route 101 of the Hoenn region with your new Pokémon friend!
+
+This project simulates the core mechanics of a Pokémon game:
+- turn-based battles
+- wild encounters
+
+--- 
 
 ### Folosiți template-ul corespunzător grupei voastre!
 
