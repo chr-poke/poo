@@ -1,10 +1,74 @@
 #include <iostream>
+#include <string>
+#include <random>
 #include <array>
+#include <vector>
+#include <cmath>
 #include "include/Example.h"
 // This also works if you do not want `include/`, but some editors might not like it
 // #include "Example.h"
 
+class move {
+
+};
+
+class pokemon {
+private:
+    int pokedexNumber; // Hoenn Pokedex
+    int level;
+    int xp;
+    int hp;
+    int type1;
+    int type2;
+    std::string statusCondition;
+    std::string name;
+public:
+    pokemon() {
+        // wild encounter
+    }
+
+    pokemon(int pokedexNumber, int level) {
+        this->pokedexNumber = pokedexNumber;
+        this->level = level;
+        this->xp = pow(level, 3);
+        // hp din db
+        // types din db
+        this->statusCondition = "None";
+        switch (pokedexNumber) {
+            case 1:
+                this->name = "Treecko";
+                break;
+            case 4:
+                this->name = "Torchic";
+                break;
+            case 7:
+                this->name = "Mudkip";
+                break;
+            default:
+                this->name = "Unknown";
+        }
+        std::string input;
+        bool dialog = true;
+        while (dialog) {
+            std::cout << "Give a nickname to the captured " + name + "? Y/N\n";
+            std::cin >> input;
+            if (input.size() == 1 && (input[0] == 'Y' || input[0] == 'N')) {
+                dialog = false;
+                if (input[0] == 'Y') {
+                    std::cout << "Type your nickname:\n";
+                    std::cin >> this->name;
+                }
+            }
+        }
+    }
+
+    std::string getNume() {
+        return this->name;
+    }
+};
+
 int main() {
+    /*
     std::cout << "Hello, world!\n";
     Example e1;
     e1.g();
@@ -51,5 +115,43 @@ int main() {
     ///     fis >> v2[i];
     ///
     ///////////////////////////////////////////////////////////////////////////
+    return 0;
+    */
+    // *** STARTER SELECTION ***
+    int selectedStarter = 0;
+    bool starterWasChosen = false;
+    std::cout << "Professor Birch is in trouble! Release a Pokemon and rescue him!\n"
+                 "Type '1', '2' or '3' to show details about each Pokemon.\n";
+    while (!starterWasChosen) {
+        std::string input;
+        std::cin >> input;
+        if (input.size() == 1) {
+            switch (input[0]) {
+                case '1':
+                    std::cout << "Wood Gecko Pokemon - Treecko\n";
+                    selectedStarter = 1;
+                    break;
+                case '2':
+                    std::cout << "Chick Pokemon - Torchic\n";
+                    selectedStarter = 2;
+                    break;
+                case '3':
+                    std::cout << "Mud Fish Pokemon - Mudkip\n";
+                    selectedStarter = 3;
+                    break;
+                case 'Y':
+                    starterWasChosen = true;
+                    break;
+                default:
+                    std::cout << "Invalid input!\n";
+            }
+            if (input[0] >= '1' && input[0] <= '3')
+                std::cout << "Type 'Y' to choose this Pokemon!\n";
+        }
+        else
+            std::cout << "Invalid input!\n";
+    }
+    pokemon starter((selectedStarter - 1) * 3 + 1, 5);
+
     return 0;
 }
