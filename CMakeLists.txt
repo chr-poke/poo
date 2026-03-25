@@ -51,6 +51,13 @@ include(cmake/CopyHelper.cmake)
 # NOTE: update executable name in .github/workflows/cmake.yml:25 when changing name here
 add_executable(${MAIN_EXECUTABLE_NAME}
     main.cpp
+        src/globals.cpp
+        include/pokeType.h
+        src/pokeType.cpp
+        include/move.h
+        src/move.cpp
+        include/pokemon.h
+        src/pokemon.cpp
 )
 target_sources(${MAIN_EXECUTABLE_NAME}
     PRIVATE
