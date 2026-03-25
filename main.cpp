@@ -265,7 +265,7 @@ public:
     move selMove() {
         std::string input;
         std::cout << "| ";
-        for (int i = 0; i < moveset.size(); i++)
+        for (unsigned long i = 0; i < moveset.size(); i++)
             std::cout << i + 1 << ". " << moveset[i].getName() << " | ";
         std::cout << std::endl << std::endl;
         std::cout << "Use a move by typing '1'-'"
@@ -273,13 +273,15 @@ public:
         std::cout << "Type 'help' to learn more about " << name << "'s moves.\n";
         while (std::cin >> input) {
             if (input == "help")
-                for (int i = 0; i < moveset.size(); i++)
+                for (unsigned long i = 0; i < moveset.size(); i++)
                     std::cout << i + 1 << ". " << moveset[i];
-            else if (stol(input) >= 1 && stol(input) <= moveset.size())
+            else if (stol(input) >= 1 && static_cast<unsigned long>(stol(input)) <= moveset.size())
                 return moveset[stoi(input) - 1];
             else
                 std::cout << "Invalid input!\n";
         }
+        move none;
+        return none;
     }
 
     [[nodiscard]] const std::string& getName() const {
