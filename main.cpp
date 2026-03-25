@@ -46,7 +46,7 @@ public:
     [[nodiscard]] float getDefense(int i) const {
         return defense[i];
     }
-    [[nodiscard]] std::string getName() const {
+    [[nodiscard]] const std::string& getName() const {
         return name;
     }
     [[nodiscard]] int getID() const {
@@ -101,10 +101,10 @@ public:
     [[nodiscard]] int getPower() const {
         return power;
     }
-    [[nodiscard]] pokeType getType() const {
+    [[nodiscard]] const pokeType& getType() const {
         return type;
     }
-    [[nodiscard]] std::string getName() const {
+    [[nodiscard]] const std::string& getName() const {
         return name;
     }
 };
@@ -282,7 +282,7 @@ public:
         }
     }
 
-    [[nodiscard]] std::string getName() const {
+    [[nodiscard]] const std::string& getName() const {
         return name;
     }
     [[nodiscard]] int getHP() const {
@@ -291,13 +291,13 @@ public:
     [[nodiscard]] int getDefense() const {
         return defense;
     }
-    [[nodiscard]] pokeType getType1() const {
+    [[nodiscard]] const pokeType& getType1() const {
         return type1;
     }
-    [[nodiscard]] pokeType getType2() const {
+    [[nodiscard]] const pokeType& getType2() const {
         return type2;
     }
-    [[nodiscard]] std::vector<move> getMoveset() const {
+    [[nodiscard]] const std::vector<move>& getMoveset() const {
         return moveset;
     }
     [[nodiscard]] double getXP() const {
@@ -379,11 +379,10 @@ int main() {
     bool onRoute = true;
     while (onRoute) {
         for (int i = 0; i < 1; i++) {
-            std::string input;
             pokemon poochyena(10, 17, 10, 8,
-                darkType, noneType,
-                {tackleMove, howlMove, sand_attackMove},
-                "Poochyena", 4, 0);
+                              darkType, noneType,
+                              {tackleMove, howlMove, sand_attackMove},
+                              "Poochyena", 4, 0);
             std::cout << "Go! " << starter.getName() << "!\n\n";
 
             while (poochyena.getHP() > 0 && starter.getHP() > 0) {
@@ -411,6 +410,7 @@ int main() {
                 onRoute = false;
             }
             else {
+                std::string input;
                 std::cout << "\nWild " << poochyena.getName() << " fainted!\n";
                 std::cout << starter.getName() << " gained "
                           << starter.xpGain(poochyena.getXP(), poochyena.getLevel())
