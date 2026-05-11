@@ -31,6 +31,8 @@ pokemon::pokemon() {
     this->hp = 0;
     this->attack = 0;
     this->defense = 0;
+    this->sp_attack = 0;
+    this->sp_defense = 0;
     this->type1 = noneType;
     this->type2 = noneType;
     this->moveset = {};
@@ -42,11 +44,13 @@ pokemon::pokemon() {
 
 pokemon::pokemon(const int pokedexNumber_, const int full_hp_,
                  const int attack_, const int defense_,
+                 const int sp_attack_, const int sp_defense_,
                  const pokeType& type1_, const pokeType& type2_,
-                 const std::vector<move>& moveset_, std::string  name_,
+                 const std::vector<std::shared_ptr<move>>& moveset_, std::string  name_,
                  const int level_, const int status_) :
         pokedexNumber{pokedexNumber_}, full_hp{full_hp_},
         attack{attack_}, defense{defense_},
+        sp_attack{sp_attack_}, sp_defense{sp_defense_},
         type1{type1_}, type2{type2_},
         moveset{moveset_}, name{std::move(name_)},
         level{level_}, status{status_} {
@@ -62,6 +66,8 @@ pokemon::pokemon(const pokemon& other) {
     this->hp = other.full_hp;
     this->attack = other.attack;
     this->defense = other.defense;
+    this->sp_attack = other.sp_attack;
+    this->sp_defense = other.sp_defense;
     this->type1 = other.type1;
     this->type2 = other.type2;
     this->moveset = other.moveset;
@@ -97,6 +103,8 @@ int pokemon::xpGain(const double b, const int l) {
         level++;
         attack++;
         defense++;
+        sp_attack++;
+        sp_defense++;
         full_hp += 2;
     }
     return b * l / 7;
@@ -108,22 +116,29 @@ void pokemon::takeDamage(const int damage) {
         hp = 0;
 }
 
-[[nodiscard]] int pokemon::damage(const int p, const int d, const float t1, const float t2) const {
+[[nodiscard]] int pokemon::damage(const bool sp, const int p, const int d, const float t1, const float t2) const {
     // p = move power
-    // d = defense of target
+    // d = defense/sp_defense of target
     // t1 = target's 1st type effectiveness
     // t2 = target's 2nd type effectiveness
+    // sp = true if move is special, false otherwise
     // r = random number between 217/255 and 1
+    // a = attack/sp_attack of user
     const float r = getRandom();
+    int a;
+    if (sp)
+        a = sp_attack;
+    else
+        a = attack;
     return std::floor(
-        (static_cast<float>(((2 * level) / 5 + 2) * p * attack) / static_cast<float>(d)) / 50.0 * t1 * t2 * r);
+        (static_cast<float>(((2 * level) / 5 + 2) * p * a) / static_cast<float>(d)) / 50.0 * t1 * t2 * r);
 }
 
-move pokemon::selMove() {
+std::shared_ptr<move> pokemon::selMove() {
     std::string input;
     std::cout << "| ";
     for (unsigned long i = 0; i < moveset.size(); i++)
-        std::cout << i + 1 << ". " << moveset[i].getName() << " | ";
+        std::cout << i + 1 << ". " << moveset[i]->getName() << " | ";
     std::cout << std::endl << std::endl;
     std::cout << "Use a move by typing '1'-'"
               << std::to_string(moveset.size()) << "'.\n";
@@ -137,6 +152,6 @@ move pokemon::selMove() {
         else
             std::cout << "Invalid input!\n";
     }
-    move none;
+    std::shared_ptr<move> none;
     return none;
 }

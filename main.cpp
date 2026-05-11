@@ -59,7 +59,7 @@ int main() {
     bool onRoute = true;
     while (onRoute) {
         for (int i = 0; i < 1; i++) {
-            pokemon poochyena(10, 17, 10, 8,
+            pokemon poochyena(10, 17, 10, 8, 8, 8,
                               darkType, noneType,
                               {tackleMove, howlMove, sand_attackMove},
                               "Poochyena", 4, 0);
@@ -67,22 +67,14 @@ int main() {
 
             while (poochyena.getHP() > 0 && starter.getHP() > 0) {
                 std::cout << poochyena << std::endl << starter;
-                move myMove = starter.selMove();
-                std::cout << "--- " << starter.getName() << " used " << myMove.getName() << "! ---\n";
-                poochyena.takeDamage(starter.damage(
-                    myMove.getPower(), poochyena.getDefense(),
-                    myMove.getType().getAttack(poochyena.getType1().getID()),
-                    myMove.getType().getAttack(poochyena.getType2().getID())));
+                std::shared_ptr<move> myMove = starter.selMove();
+                myMove->execute(starter, poochyena);
                 if (poochyena.getHP() <= 0)
                     break;
 
                 std::cout << std::endl << poochyena << std::endl << starter << std::endl;
-                move oppMove = poochyena.getMoveset()[rand() % poochyena.getMoveset().size()];
-                std::cout << "--- " << poochyena.getName() << " used " << oppMove.getName() << "! ---\n\n";
-                starter.takeDamage(poochyena.damage(
-                    oppMove.getPower(), starter.getDefense(),
-                    oppMove.getType().getAttack(starter.getType1().getID()),
-                    oppMove.getType().getAttack(starter.getType2().getID())));
+                std::shared_ptr<move> oppMove = poochyena.getMoveset()[rand() % poochyena.getMoveset().size()];
+                oppMove->execute(poochyena, starter);
             }
             if (starter.getHP() <= 0) {
                 std::cout << starter.getName() << " fainted!\n\n";
