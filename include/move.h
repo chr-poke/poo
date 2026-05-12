@@ -12,6 +12,8 @@ protected:
     std::string name;
     int power;
 
+    virtual void print(std::ostream& os) const;
+
 public:
     move();
     move(const pokeType& type_, int power_, std::string name_);
@@ -25,6 +27,9 @@ public:
 };
 
 class physicalMove : public move {
+protected:
+    void print(std::ostream& os) const override;
+
 public:
     physicalMove(const pokeType& type_, int power_, std::string name_)
         : move(type_, power_, std::move(name_)) {}
@@ -36,6 +41,9 @@ public:
 };
 
 class specialMove : public move {
+protected:
+    void print(std::ostream& os) const override;
+
 public:
     specialMove(const pokeType& type_, int power_, std::string name_)
         : move(type_, power_, std::move(name_)) {}
@@ -49,6 +57,9 @@ public:
 class statusMove : public move {
 private:
     std::vector<int> effects;
+
+protected:
+    void print(std::ostream& os) const override;
 
 public:
     statusMove(const pokeType& type_, int power_, std::string name_, const std::vector<int>& effects_)

@@ -216,7 +216,7 @@ std::shared_ptr<move> pokemon::selMove() {
     while (std::cin >> input) {
         if (input == "help")
             for (unsigned long i = 0; i < moveset.size(); i++)
-                std::cout << i + 1 << ". " << moveset[i];
+                std::cout << i + 1 << ". " << *moveset[i];
         else if (stol(input) >= 1 && static_cast<unsigned long>(stol(input)) <= moveset.size())
             return moveset[stoi(input) - 1];
         else
