@@ -31,10 +31,21 @@ void specialMove::execute(pokemon& attacker, pokemon& defender) {
                               type.getAttack(defender.getType1().getID()),
                               type.getAttack(defender.getType2().getID()));
     defender.takeDamage(dmg);
-    // de modificat
 }
 
 void statusMove::execute(pokemon& attacker, pokemon& defender) {
     std::cout << "--- " << attacker.getName() << " used " << name << "! ---\n";
-    // de modificat
+    std::vector<std::string> statNames = {
+        "Attack", "Defense", "Special Attack", "Special Defense",
+        "Attack", "Defense", "Special Attack", "Special Defense"
+    };
+
+    for (int i = 0; i < 8; i++) {
+        if (effects[i] == 0)
+            continue;
+        pokemon& target = (i < 4) ? defender : attacker;
+        std::string action = (effects[i] < 0) ? "fell" : "rose";
+        target.setEffect(i % 4, effects[i]);
+        std::cout << target.getName() << "'s " << statNames[i] << " " << action << "!\n";
+    }
 }

@@ -20,8 +20,6 @@ public:
     virtual void execute(pokemon& attacker, pokemon& defender) = 0;
 
     friend std::ostream& operator<<(std::ostream& os, const move& obj);
-    [[nodiscard]] int getPower() const { return power; }
-    [[nodiscard]] const pokeType& getType() const { return type; }
     [[nodiscard]] const std::string& getName() const { return name; }
 };
 
@@ -42,9 +40,12 @@ public:
 };
 
 class statusMove : public move {
+private:
+    std::vector<int> effects;
+
 public:
-    statusMove(const pokeType& type_, int power_, std::string name_)
-        : move(type_, power_, std::move(name_)) {}
+    statusMove(const pokeType& type_, int power_, std::string name_, const std::vector<int>& effects_)
+        : move(type_, power_, std::move(name_)), effects(effects_) {}
 
     void execute(pokemon& attacker, pokemon& defender) override;
 };

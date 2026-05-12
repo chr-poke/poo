@@ -14,6 +14,7 @@ private:
     int defense;
     int sp_attack;
     int sp_defense;
+    std::vector<int> effects;
     pokeType type1;
     pokeType type2;
     std::vector<std::shared_ptr<move>> moveset;
@@ -43,14 +44,18 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const pokemon& obj);
     void changeStatus(int newStatus);
     int xpGain(double b, int l);
+    [[nodiscard]] int getAttack() const;
+    [[nodiscard]] int getDefense() const;
+    [[nodiscard]] int getSpAttack() const;
+    [[nodiscard]] int getSpDefense() const;
+    void setEffect(int stat, int change);
+    void resetEffects();
     void takeDamage(int damage);
     [[nodiscard]] int damage(bool sp, int p, int d, float t1, float t2) const;
     std::shared_ptr<move> selMove();
 
     [[nodiscard]] const std::string& getName() const { return name; }
     [[nodiscard]] int getHP() const { return hp; }
-    [[nodiscard]] int getDefense() const { return defense; }
-    [[nodiscard]] int getSpDefense() const { return sp_defense; }
     [[nodiscard]] const pokeType& getType1() const { return type1; }
     [[nodiscard]] const pokeType& getType2() const { return type2; }
     [[nodiscard]] const std::vector<std::shared_ptr<move>>& getMoveset() const { return moveset; }

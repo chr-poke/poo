@@ -76,6 +76,7 @@ int main() {
                 std::shared_ptr<move> oppMove = poochyena.getMoveset()[rand() % poochyena.getMoveset().size()];
                 oppMove->execute(poochyena, starter);
             }
+            starter.resetEffects();
             if (starter.getHP() <= 0) {
                 std::cout << starter.getName() << " fainted!\n\n";
                 std::cout << "You blacked out!\n";

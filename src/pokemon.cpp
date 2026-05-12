@@ -33,6 +33,7 @@ pokemon::pokemon() {
     this->defense = 0;
     this->sp_attack = 0;
     this->sp_defense = 0;
+    this->effects = {0, 0, 0, 0};
     this->type1 = noneType;
     this->type2 = noneType;
     this->moveset = {};
@@ -58,6 +59,7 @@ pokemon::pokemon(const int pokedexNumber_, const int full_hp_,
     this->xp = pow(level, 3);
     if (status == 0)
         std::cout << "Wild " << name << " appeared!\n";
+    this->effects = {0, 0, 0, 0};
 }
 
 pokemon::pokemon(const pokemon& other) {
@@ -68,6 +70,7 @@ pokemon::pokemon(const pokemon& other) {
     this->defense = other.defense;
     this->sp_attack = other.sp_attack;
     this->sp_defense = other.sp_defense;
+    this->effects = other.effects;
     this->type1 = other.type1;
     this->type2 = other.type2;
     this->moveset = other.moveset;
@@ -110,6 +113,54 @@ int pokemon::xpGain(const double b, const int l) {
     return b * l / 7;
 }
 
+// https://www.dragonflycave.com/mechanics/stat-stages/
+
+[[nodiscard]] int pokemon::getAttack() const {
+    if (effects[0] > 0)
+        return std::floor(attack * (effects[0] + 2) / 2.0);
+    if (effects[0] < 0)
+        return std::floor(attack * 2.0 / (2 - effects[0]));
+    return attack;
+}
+
+[[nodiscard]] int pokemon::getDefense() const {
+    if (effects[1] > 0)
+        return std::floor(defense * (effects[1] + 2) / 2.0);
+    if (effects[1] < 0)
+        return std::floor(defense * 2.0 / (2 - effects[1]));
+    return defense;
+}
+
+[[nodiscard]] int pokemon::getSpAttack() const {
+    if (effects[2] > 0)
+        return std::floor(sp_attack * (effects[2] + 2) / 2.0);
+    if (effects[2] < 0)
+        return std::floor(sp_attack * 2.0 / (2 - effects[2]));
+    return sp_attack;
+}
+
+[[nodiscard]] int pokemon::getSpDefense() const {
+    if (effects[3] > 0)
+        return std::floor(sp_defense * (effects[3] + 2) / 2.0);
+    if (effects[3] < 0)
+        return std::floor(sp_defense * 2.0 / (2 - effects[3]));
+    return sp_defense;
+}
+
+void pokemon::setEffect(const int stat, const int change) {
+    if (effects[stat] + change > 6)
+        effects[stat] = 6;
+    else if (effects[stat] + change < -6)
+        effects[stat] = -6;
+    else
+        effects[stat] += change;
+}
+
+void pokemon::resetEffects() {
+    for (int i = 0; i < 4; i++)
+        effects[i] = 0;
+}
+
 void pokemon::takeDamage(const int damage) {
     hp -= damage;
     if (hp < 0)
@@ -127,9 +178,9 @@ void pokemon::takeDamage(const int damage) {
     const float r = getRandom();
     int a;
     if (sp)
-        a = sp_attack;
+        a = getSpAttack();
     else
-        a = attack;
+        a = getAttack();
     return std::floor(
         (static_cast<float>(((2 * level) / 5 + 2) * p * a) / static_cast<float>(d)) / 50.0 * t1 * t2 * r);
 }
