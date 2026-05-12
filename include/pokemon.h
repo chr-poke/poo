@@ -38,10 +38,11 @@ public:
             const std::vector<std::shared_ptr<move>>& moveset_, std::string name_,
             int level_, int status_);
     pokemon(const pokemon& other);
-    pokemon& operator=(const pokemon& other) = default;
+    pokemon& operator=(pokemon other);
     ~pokemon();
 
     friend std::ostream& operator<<(std::ostream& os, const pokemon& obj);
+    friend void swap(pokemon& first, pokemon& second) noexcept;
     void changeStatus(int newStatus);
     int xpGain(double b, int l);
     [[nodiscard]] int getAttack() const;

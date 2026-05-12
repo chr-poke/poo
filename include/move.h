@@ -17,6 +17,7 @@ public:
     move(const pokeType& type_, int power_, std::string name_);
 
     virtual ~move() = default;
+    [[nodiscard]] virtual std::shared_ptr<move> clone() const = 0;
     virtual void execute(pokemon& attacker, pokemon& defender) = 0;
 
     friend std::ostream& operator<<(std::ostream& os, const move& obj);
@@ -28,6 +29,9 @@ public:
     physicalMove(const pokeType& type_, int power_, std::string name_)
         : move(type_, power_, std::move(name_)) {}
 
+    [[nodiscard]] std::shared_ptr<move> clone() const override {
+        return std::make_shared<physicalMove>(*this);
+    }
     void execute(pokemon &attacker, pokemon &defender) override;
 };
 
@@ -36,6 +40,9 @@ public:
     specialMove(const pokeType& type_, int power_, std::string name_)
         : move(type_, power_, std::move(name_)) {}
 
+    [[nodiscard]] std::shared_ptr<move> clone() const override {
+        return std::make_shared<specialMove>(*this);
+    }
     void execute(pokemon& attacker, pokemon& defender) override;
 };
 
@@ -47,6 +54,9 @@ public:
     statusMove(const pokeType& type_, int power_, std::string name_, const std::vector<int>& effects_)
         : move(type_, power_, std::move(name_)), effects(effects_) {}
 
+    [[nodiscard]] std::shared_ptr<move> clone() const override {
+        return std::make_shared<statusMove>(*this);
+    }
     void execute(pokemon& attacker, pokemon& defender) override;
 };
 

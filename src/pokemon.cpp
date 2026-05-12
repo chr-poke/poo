@@ -62,22 +62,23 @@ pokemon::pokemon(const int pokedexNumber_, const int full_hp_,
     this->effects = {0, 0, 0, 0};
 }
 
-pokemon::pokemon(const pokemon& other) {
-    this->pokedexNumber = other.pokedexNumber;
-    this->full_hp = other.full_hp;
-    this->hp = other.full_hp;
-    this->attack = other.attack;
-    this->defense = other.defense;
-    this->sp_attack = other.sp_attack;
-    this->sp_defense = other.sp_defense;
-    this->effects = other.effects;
-    this->type1 = other.type1;
-    this->type2 = other.type2;
-    this->moveset = other.moveset;
-    this->name = other.name;
-    this->level = other.level;
-    this->xp = pow(other.level, 3);
-    this->status = other.status;
+pokemon::pokemon(const pokemon& other) :
+        pokedexNumber{other.pokedexNumber},
+        full_hp{other.full_hp}, hp{other.hp},
+        attack{other.attack}, defense{other.defense},
+        sp_attack{other.sp_attack}, sp_defense{other.sp_defense},
+        effects{other.effects},
+        type1{other.type1}, type2{other.type2},
+        name{other.name}, level{other.level},
+        xp{other.xp}, status{other.status} {
+    for (const auto& m : other.moveset)
+        if (m)
+            this->moveset.push_back(m->clone());
+}
+
+pokemon& pokemon::operator=(pokemon other) {
+    swap(*this, other);
+    return *this;
 }
 
 pokemon::~pokemon() {
@@ -90,6 +91,24 @@ std::ostream& operator<<(std::ostream& os, const pokemon& obj) {
     os << obj.name << " (Level " << obj.level << ")\n"
        << "HP: " << obj.hp << "/" << obj.full_hp << "\n";
     return os;
+}
+
+void swap(pokemon& x, pokemon& y) noexcept {
+    std::swap(x.pokedexNumber, y.pokedexNumber);
+    std::swap(x.full_hp, y.full_hp);
+    std::swap(x.hp, y.hp);
+    std::swap(x.attack, y.attack);
+    std::swap(x.defense, y.defense);
+    std::swap(x.sp_attack, y.sp_attack);
+    std::swap(x.sp_defense, y.sp_defense);
+    std::swap(x.effects, y.effects);
+    std::swap(x.type1, y.type1);
+    std::swap(x.type2, y.type2);
+    std::swap(x.moveset, y.moveset);
+    std::swap(x.name, y.name);
+    std::swap(x.level, y.level);
+    std::swap(x.xp, y.xp);
+    std::swap(x.status, y.status);
 }
 
 void pokemon::changeStatus(const int newStatus) {
