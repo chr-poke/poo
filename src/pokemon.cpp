@@ -47,13 +47,13 @@ pokemon::pokemon(const int pokedexNumber_, const int full_hp_,
                  const int attack_, const int defense_,
                  const int sp_attack_, const int sp_defense_,
                  const pokeType& type1_, const pokeType& type2_,
-                 const std::vector<std::shared_ptr<move>>& moveset_, std::string  name_,
+                 std::vector<std::shared_ptr<move>> moveset_, std::string  name_,
                  const int level_, const int status_) :
         pokedexNumber{pokedexNumber_}, full_hp{full_hp_},
         attack{attack_}, defense{defense_},
         sp_attack{sp_attack_}, sp_defense{sp_defense_},
         type1{type1_}, type2{type2_},
-        moveset{moveset_}, name{std::move(name_)},
+        moveset{std::move(moveset_)}, name{std::move(name_)},
         level{level_}, status{status_} {
     this->hp = full_hp;
     this->xp = pow(level, 3);

@@ -35,7 +35,7 @@ public:
             int attack_, int defense_,
             int sp_attack_, int sp_defense_,
             const pokeType& type1_, const pokeType& type2_,
-            const std::vector<std::shared_ptr<move>>& moveset_, std::string name_,
+            std::vector<std::shared_ptr<move>> moveset_, std::string name_,
             int level_, int status_);
     pokemon(const pokemon& other);
     pokemon& operator=(pokemon other);
