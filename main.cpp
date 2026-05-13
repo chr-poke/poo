@@ -116,7 +116,8 @@ int main() {
         }
         while (onRoute) {
             pokemon wildPokemon;
-            switch (int chance = rand() % 9) {
+            int chance = rand() % 9;
+            switch (chance) {
                 case 0:
                     wildPokemon = pokemon(12, 17, 8, 8, 8, 8,
                                 normalType, noneType,
