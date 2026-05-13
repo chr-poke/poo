@@ -44,6 +44,9 @@ void physicalMove::print(std::ostream& os) const {
 }
 
 void specialMove::execute(pokemon& attacker, pokemon& defender) {
+    if (attacker.getHP() <= 0) {
+        throw battleException(attacker.getName() + " has fainted!");
+    }
     std::cout << "--- " << attacker.getName() << " used " << name << "! ---\n";
     const int dmg = attacker.damage(true, power, defender.getSpDefense(),
                               type.getAttack(defender.getType1().getID()),
@@ -58,6 +61,9 @@ void specialMove::print(std::ostream& os) const {
 }
 
 void statusMove::execute(pokemon& attacker, pokemon& defender) {
+    if (attacker.getHP() <= 0) {
+        throw battleException(attacker.getName() + " has fainted!");
+    }
     std::cout << "--- " << attacker.getName() << " used " << name << "! ---\n";
 
     for (int i = 0; i < 8; i++) {
