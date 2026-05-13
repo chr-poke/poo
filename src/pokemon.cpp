@@ -1,4 +1,5 @@
 #include "pokemon.h"
+#include "exceptions.h"
 #include <random>
 #include <cmath>
 
@@ -55,6 +56,10 @@ pokemon::pokemon(const int pokedexNumber_, const int full_hp_,
         type1{type1_}, type2{type2_},
         moveset{std::move(moveset_)}, name{std::move(name_)},
         level{level_}, status{status_} {
+    if (full_hp_ <= 0 || level_ <= 0) {
+        throw statException("Pokémon must have at least 1 HP and level 1!");
+    }
+
     this->hp = full_hp;
     this->xp = pow(level, 3);
     if (status == 0)
@@ -222,6 +227,5 @@ std::shared_ptr<move> pokemon::selMove() {
         else
             std::cout << "Invalid input!\n";
     }
-    std::shared_ptr<move> none;
-    return none;
+    throw inputException("Input stream was closed unexpectedly during move selection!");
 }

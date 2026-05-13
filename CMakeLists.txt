@@ -58,6 +58,7 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         src/move.cpp
         include/pokemon.h
         src/pokemon.cpp
+        include/exceptions.h
 )
 target_sources(${MAIN_EXECUTABLE_NAME}
     PRIVATE

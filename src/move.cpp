@@ -1,5 +1,6 @@
 #include "move.h"
 #include "pokemon.h"
+#include "exceptions.h"
 #include <utility>
 
 std::vector<std::string> statNames = {
@@ -26,6 +27,9 @@ void move::print(std::ostream& os) const {
 }
 
 void physicalMove::execute(pokemon& attacker, pokemon& defender) {
+    if (attacker.getHP() <= 0) {
+        throw battleException(attacker.getName() + " has fainted!");
+    }
     std::cout << "--- " << attacker.getName() << " used " << name << "! ---\n";
     const int dmg = attacker.damage(false, power, defender.getDefense(),
                               type.getAttack(defender.getType1().getID()),
