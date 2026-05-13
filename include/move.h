@@ -72,6 +72,20 @@ public:
     [[nodiscard]] bool loweringStats() const;
 };
 
+class healingMove : public move {
+protected:
+    void print(std::ostream& os) const override;
+
+public:
+    healingMove(const pokeType& type_, int power_, std::string name_)
+        : move(type_, power_, std::move(name_)) {}
+
+    [[nodiscard]] std::shared_ptr<move> clone() const override {
+        return std::make_shared<healingMove>(*this);
+    }
+    void execute(pokemon& attacker, pokemon& defender) override;
+};
+
 extern std::shared_ptr<move> leerMove;
 extern std::shared_ptr<move> poundMove;
 extern std::shared_ptr<move> absorbMove;

@@ -52,7 +52,8 @@ public:
     [[nodiscard]] int getSpDefense() const;
     void setEffect(int stat, int change);
     void resetEffects();
-    void takeDamage(int damage);
+    void heal(int amount);
+    void takeDamage(int amount);
     [[nodiscard]] int damage(bool sp, int p, int d, float t1, float t2) const;
     std::shared_ptr<move> selMove();
 

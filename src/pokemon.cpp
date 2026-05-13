@@ -190,8 +190,14 @@ void pokemon::resetEffects() {
         effects[i] = 0;
 }
 
-void pokemon::takeDamage(const int damage) {
-    hp -= damage;
+void pokemon::heal(const int amount) {
+    hp += amount;
+    if (hp > full_hp)
+        hp = full_hp;
+}
+
+void pokemon::takeDamage(const int amount) {
+    hp -= amount;
     if (hp < 0)
         hp = 0;
 }

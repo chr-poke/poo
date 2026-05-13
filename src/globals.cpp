@@ -41,7 +41,7 @@ pokeType steelType(10, "Steel",
 
 std::shared_ptr<move> leerMove = std::make_shared<statusMove>(normalType, 0, "Leer", std::vector{0, -1, 0, 0, 0, 0, 0, 0});
 std::shared_ptr<move> poundMove = std::make_shared<physicalMove>(normalType, 40, "Pound");
-std::shared_ptr<move> absorbMove = std::make_shared<specialMove>(grassType, 20, "Absorb");
+std::shared_ptr<move> absorbMove = std::make_shared<healingMove>(grassType, 20, "Absorb");
 std::shared_ptr<move> quick_attackMove = std::make_shared<physicalMove>(normalType, 40, "Quick Attack");
 std::shared_ptr<move> growlMove = std::make_shared<statusMove>(normalType, 0, "Growl", std::vector{-1, 0, 0, 0, 0, 0, 0, 0});
 std::shared_ptr<move> scratchMove = std::make_shared<physicalMove>(normalType, 40, "Scratch");

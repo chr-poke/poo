@@ -91,3 +91,26 @@ bool statusMove::loweringStats() const {
             return true;
     return false;
 }
+
+void healingMove::execute(pokemon& attacker, pokemon& defender) {
+    if (attacker.getHP() <= 0)
+        throw battleException(attacker.getName() + " has fainted!");
+    std::cout << "--- " << attacker.getName() << " used " << name << "! ---\n";
+    const int dmg = attacker.damage(true, power, defender.getSpDefense(),
+                              type.getAttack(defender.getType1().getID()),
+                              type.getAttack(defender.getType2().getID()));
+    std::cout << attacker.getName() << " dealt " << dmg << "HP of damage!\n";
+    defender.takeDamage(dmg);
+
+    int healAmount = dmg / 2;
+    if (healAmount > 0) {
+        attacker.heal(healAmount);
+        std::cout << attacker.getName() << " healed " << healAmount << " HP!\n";
+    }
+    std::cout << std::endl;
+}
+
+void healingMove::print(std::ostream& os) const {
+    move::print(os);
+    os << " - Healing Move (Power: " << power << ", restores 50% of damage dealt)\n";
+}
