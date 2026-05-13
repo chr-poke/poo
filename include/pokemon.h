@@ -62,6 +62,7 @@ public:
     [[nodiscard]] const std::vector<std::shared_ptr<move>>& getMoveset() const { return moveset; }
     [[nodiscard]] double getXP() const { return xp; }
     [[nodiscard]] int getLevel() const { return level; }
+    [[nodiscard]] int getPokedexNumber() const { return pokedexNumber; }
 };
 
 extern pokemon treecko;

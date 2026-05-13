@@ -69,6 +69,7 @@ public:
         return std::make_shared<statusMove>(*this);
     }
     void execute(pokemon& attacker, pokemon& defender) override;
+    [[nodiscard]] bool loweringStats() const;
 };
 
 extern std::shared_ptr<move> leerMove;
@@ -85,3 +86,8 @@ extern std::shared_ptr<move> water_gunMove;
 extern std::shared_ptr<move> howlMove;
 extern std::shared_ptr<move> sand_attackMove;
 extern std::shared_ptr<move> biteMove;
+extern std::shared_ptr<move> tail_whipMove;
+extern std::shared_ptr<move> headbuttMove;
+extern std::shared_ptr<move> string_shotMove;
+extern std::shared_ptr<move> poison_stingMove;
+extern std::shared_ptr<move> take_downMove;

@@ -75,3 +75,10 @@ void statusMove::print(std::ostream& os) const {
         }
     os << ")\n";
 }
+
+bool statusMove::loweringStats() const {
+    for (int i = 0; i < 4; i++)
+        if (effects[i] < 0)
+            return true;
+    return false;
+}
