@@ -25,6 +25,7 @@ private:
     // 0 - wild pokemon
     // 1 - team member
     // 2 - rejected starter
+    static int totalDefeated;
 
     static float getRandom();
     void setNickname();
@@ -44,7 +45,7 @@ public:
     friend std::ostream& operator<<(std::ostream& os, const pokemon& obj);
     friend void swap(pokemon& first, pokemon& second) noexcept;
     void changeStatus(int newStatus);
-    int xpGain(double b, int l);
+    void xpGain(double b, int l);
     [[nodiscard]] int getAttack() const;
     [[nodiscard]] int getDefense() const;
     [[nodiscard]] int getSpAttack() const;
@@ -63,6 +64,8 @@ public:
     [[nodiscard]] double getXP() const { return xp; }
     [[nodiscard]] int getLevel() const { return level; }
     [[nodiscard]] int getPokedexNumber() const { return pokedexNumber; }
+    static int getTotalDefeated() { return totalDefeated; }
+    static void incrementDefeated() { totalDefeated++; }
 };
 
 extern pokemon treecko;

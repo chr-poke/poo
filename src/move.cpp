@@ -34,6 +34,7 @@ void physicalMove::execute(pokemon& attacker, pokemon& defender) {
     const int dmg = attacker.damage(false, power, defender.getDefense(),
                               type.getAttack(defender.getType1().getID()),
                               type.getAttack(defender.getType2().getID()));
+    std::cout << attacker.getName() << " dealt " << dmg << "HP of damage!\n\n";
     defender.takeDamage(dmg);
 }
 
@@ -47,6 +48,7 @@ void specialMove::execute(pokemon& attacker, pokemon& defender) {
     const int dmg = attacker.damage(true, power, defender.getSpDefense(),
                               type.getAttack(defender.getType1().getID()),
                               type.getAttack(defender.getType2().getID()));
+    std::cout << attacker.getName() << " dealt " << dmg << "HP of damage!\n\n";
     defender.takeDamage(dmg);
 }
 
@@ -64,7 +66,7 @@ void statusMove::execute(pokemon& attacker, pokemon& defender) {
         pokemon& target = (i < 4) ? defender : attacker;
         std::string action = (effects[i] < 0) ? "fell" : "rose";
         target.setEffect(i % 4, effects[i]);
-        std::cout << target.getName() << "'s " << statNames[i] << " " << action << "!\n";
+        std::cout << target.getName() << "'s " << statNames[i] << " " << action << "!\n\n";
     }
 }
 

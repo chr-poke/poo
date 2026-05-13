@@ -3,6 +3,8 @@
 #include <random>
 #include <cmath>
 
+int pokemon::totalDefeated = 0;
+
 float pokemon::getRandom() {
     static std::random_device rd;
     static std::mt19937 gen(rd());
@@ -122,10 +124,12 @@ void pokemon::changeStatus(const int newStatus) {
         setNickname();
 }
 
-int pokemon::xpGain(const double b, const int l) {
+void pokemon::xpGain(const double b, const int l) {
     // b = xp of the defeated Pokemon
     // l = level of the defeated Pokemon
-    xp += b * l / 7;
+    const int gain = b * l / 7;
+    std::cout << name << " gained " << gain << " XP.\n";
+    xp += gain;
     if (xp >= pow(level + 1, 3)) {
         level++;
         attack++;
@@ -133,8 +137,9 @@ int pokemon::xpGain(const double b, const int l) {
         sp_attack++;
         sp_defense++;
         full_hp += 2;
+        std::cout << name << " grew to Level " << level << "!\n";
     }
-    return b * l / 7;
+    std::cout << std::endl;
 }
 
 // https://www.dragonflycave.com/mechanics/stat-stages/

@@ -19,7 +19,6 @@ bool battle(pokemon& partner, pokemon& foe) {
         if (foe.getHP() <= 0)
             break;
 
-        std::cout << std::endl << foe << std::endl << partner << std::endl;
         std::shared_ptr<move> oppMove = foe.getMoveset()[rand() % foe.getMoveset().size()];
         oppMove->execute(foe, partner);
     }
@@ -30,10 +29,9 @@ bool battle(pokemon& partner, pokemon& foe) {
         std::cout << "You blacked out!\n";
         return false;
     }
-    std::cout << "\nWild " << foe.getName() << " fainted!\n";
-    std::cout << partner.getName() << " gained "
-              << partner.xpGain(foe.getXP(), foe.getLevel())
-              << " XP.\n\n";
+    pokemon::incrementDefeated();
+    std::cout << "Wild " << foe.getName() << " fainted!\n";
+    partner.xpGain(foe.getXP(), foe.getLevel());
     return true;
 }
 
@@ -110,8 +108,10 @@ int main() {
                 onRoute = true;
                 break;
             }
-            if (input == "N")
+            if (input == "N") {
+                onRoute = false;
                 break;
+            }
             std::cout << "Invalid input!\n";
         }
         while (onRoute) {
@@ -147,11 +147,16 @@ int main() {
                     onRoute = true;
                     break;
                 }
-                if (input == "N")
+                if (input == "N") {
+                    onRoute = false;
                     break;
+                }
                 std::cout << "Invalid input!\n";
             }
         }
+
+        std::cout << "Total wild Pokemon defeated: " << pokemon::getTotalDefeated() << std::endl << std::endl;
+
     } catch (const statException& e) {
         std::cerr << "\n[GAME CRASHED] " << e.what() << " Fix the Pokédex data.\n";
     } catch (const inputException& e) {
