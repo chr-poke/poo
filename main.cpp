@@ -97,23 +97,25 @@ int main() {
                                   darkType, noneType,
                                   {tackleMove, howlMove},
                                   "Poochyena", 4, 0);
-        battle(starter, poochyena);
+
+        bool onRoute = false;
+        if (battle(starter, poochyena)) {
+            std::cout << "Do you want to continue exploring Route 101? Y/N \n";
+            while (std::cin >> input) {
+                if (input == "Y") {
+                    onRoute = true;
+                    break;
+                }
+                if (input == "N") {
+                    onRoute = false;
+                    break;
+                }
+                std::cout << "Invalid input!\n";
+            }
+        }
 
         // *** WILD ENCOUNTERS ***
 
-        bool onRoute = false;
-        std::cout << "Do you want to continue exploring Route 101? Y/N \n";
-        while (std::cin >> input) {
-            if (input == "Y") {
-                onRoute = true;
-                break;
-            }
-            if (input == "N") {
-                onRoute = false;
-                break;
-            }
-            std::cout << "Invalid input!\n";
-        }
         while (onRoute) {
             pokemon wildPokemon;
             int chance = rand() % 9;
