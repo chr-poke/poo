@@ -58,6 +58,7 @@ public:
 
     [[nodiscard]] const std::string& getName() const { return name; }
     [[nodiscard]] int getHP() const { return hp; }
+    [[nodiscard]] int getFullHP() const { return full_hp; }
     [[nodiscard]] const pokeType& getType1() const { return type1; }
     [[nodiscard]] const pokeType& getType2() const { return type2; }
     [[nodiscard]] const std::vector<std::shared_ptr<move>>& getMoveset() const { return moveset; }

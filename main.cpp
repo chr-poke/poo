@@ -104,6 +104,7 @@ int main() {
             while (std::cin >> input) {
                 if (input == "Y") {
                     onRoute = true;
+                    starter.heal(starter.getFullHP());
                     break;
                 }
                 if (input == "N") {
@@ -126,6 +127,7 @@ int main() {
             while (std::cin >> input) {
                 if (input == "Y") {
                     onRoute = true;
+                    starter.heal(starter.getFullHP());
                     break;
                 }
                 if (input == "N") {

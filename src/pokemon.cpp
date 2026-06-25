@@ -209,8 +209,11 @@ void pokemon::takeDamage(const int amount) {
         a = getSpAttack();
     else
         a = getAttack();
-    return std::floor(
+    int dmg = std::floor(
         (static_cast<float>(((2 * level) / 5 + 2) * p * a) / static_cast<float>(d)) / 50.0 * t1 * t2 * r);
+    if (dmg == 0 && p > 0 && t1 * t2 != 0.0)
+        dmg = 1;
+    return dmg;
 }
 
 std::shared_ptr<move> pokemon::selMove() {
