@@ -1,9 +1,9 @@
 #include <iostream>
 #include <vector>
 #include <memory>
-#include <ctime>
 #include "pokemon.h"
 #include "exceptions.h"
+#include "rngEngine.h"
 
 bool battle(pokemon& partner, pokemon& foe) {
     std::cout << "Go! " << partner.getName() << "!\n\n";
@@ -19,7 +19,8 @@ bool battle(pokemon& partner, pokemon& foe) {
         if (foe.getHP() <= 0)
             break;
 
-        std::shared_ptr<move> oppMove = foe.getMoveset()[rand() % foe.getMoveset().size()];
+        const int randomMoveIndex = rngEngine::getInstance().getRandomInt(0, foe.getMoveset().size() - 1);
+        const std::shared_ptr<move> oppMove = foe.getMoveset()[randomMoveIndex];
         oppMove->execute(foe, partner);
     }
 
@@ -36,8 +37,6 @@ bool battle(pokemon& partner, pokemon& foe) {
 }
 
 int main() {
-    srand(static_cast<unsigned int>(time(nullptr)));
-
     try {
         std::string input;
 
@@ -118,8 +117,7 @@ int main() {
 
         while (onRoute) {
             pokemon wildPokemon;
-            int chance = rand() % 9;
-            switch (chance) {
+            switch (rngEngine::getInstance().getRandomInt(0, 8)) {
                 case 0:
                     wildPokemon = pokemon(12, 17, 8, 8, 8, 8,
                                 normalType, noneType,

@@ -59,6 +59,8 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         include/pokemon.h
         src/pokemon.cpp
         include/exceptions.h
+        include/rngEngine.h
+        src/rngEngine.cpp
 )
 target_sources(${MAIN_EXECUTABLE_NAME}
     PRIVATE

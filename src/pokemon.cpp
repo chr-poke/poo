@@ -1,16 +1,9 @@
 #include "pokemon.h"
 #include "exceptions.h"
-#include <random>
+#include "rngEngine.h"
 #include <cmath>
 
 int pokemon::totalDefeated = 0;
-
-float pokemon::getRandom() {
-    static std::random_device rd;
-    static std::mt19937 gen(rd());
-    std::uniform_real_distribution<float> dist(217.0f / 255.0f, 1.0f);
-    return dist(gen);
-}
 
 void pokemon::setNickname() {
     std::string input;
@@ -210,7 +203,7 @@ void pokemon::takeDamage(const int amount) {
     // sp = true if move is special, false otherwise
     // r = random number between 217/255 and 1
     // a = attack/sp_attack of user
-    const float r = getRandom();
+    const float r = rngEngine::getInstance().getRandomFloat(217.0f / 255.0f, 1.0f);
     int a;
     if (sp)
         a = getSpAttack();

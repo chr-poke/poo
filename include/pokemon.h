@@ -27,7 +27,6 @@ private:
     // 2 - rejected starter
     static int totalDefeated;
 
-    static float getRandom();
     void setNickname();
 
 public:
