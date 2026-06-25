@@ -57,8 +57,6 @@ pokemon::pokemon(const int pokedexNumber_, const int full_hp_,
 
     this->hp = full_hp;
     this->xp = pow(level, 3);
-    if (status == 0)
-        std::cout << "Wild " << name << " appeared!\n";
     this->effects = {0, 0, 0, 0};
 }
 

@@ -5,12 +5,16 @@
 #include "exceptions.h"
 #include "rngEngine.h"
 #include "pokemonFactory.h"
+#include "registry.h"
 
-bool battle(pokemon& partner, pokemon& foe) {
+bool battle(pokemon& partner, pokemon& foe, registry<std::map<std::string, std::shared_ptr<move>>>& seenMovesLog) {
     std::cout << "Go! " << partner.getName() << "!\n\n";
     while (foe.getHP() > 0 && partner.getHP() > 0) {
         std::cout << foe << std::endl << partner;
         std::shared_ptr<move> myMove = partner.selMove();
+        auto& partnersMoves = seenMovesLog.get(partner.getName());
+        if (!partnersMoves.contains(myMove->getName()))
+            partnersMoves[myMove->getName()] = myMove;
         auto sMove = std::dynamic_pointer_cast<statusMove>(myMove);
         if (sMove && foe.getPokedexNumber() == 190 && sMove->loweringStats())
             std::cout << "ABILITY: Clear Body\n"
@@ -20,15 +24,17 @@ bool battle(pokemon& partner, pokemon& foe) {
         if (foe.getHP() <= 0)
             break;
 
-        const int randomMoveIndex = rngEngine::getInstance().getRandomInt(0, foe.getMoveset().size() - 1);
-        const std::shared_ptr<move> oppMove = foe.getMoveset()[randomMoveIndex];
+        const auto oppMove = rngEngine::getInstance().pickRandom<std::shared_ptr<move>>(foe.getMoveset());
+        auto& foesMoves = seenMovesLog.get(foe.getName());
+        if (!foesMoves.contains(oppMove->getName()))
+            foesMoves[oppMove->getName()] = oppMove;
         oppMove->execute(foe, partner);
     }
 
     partner.resetEffects();
     if (partner.getHP() <= 0) {
         std::cout << partner.getName() << " fainted!\n\n";
-        std::cout << "You blacked out!\n";
+        std::cout << "You blacked out!\n\n";
         return false;
     }
     pokemon::incrementDefeated();
@@ -39,6 +45,9 @@ bool battle(pokemon& partner, pokemon& foe) {
 
 int main() {
     try {
+        registry<pokemon> pokedex;
+        registry<std::map<std::string, std::shared_ptr<move>>> seenMoves;
+
         std::string input;
 
         // *** STARTER SELECTION ***
@@ -89,6 +98,7 @@ int main() {
                 break;
             default: ;
         }
+        pokedex.add(starter.getName(), starter);
         starter.changeStatus(1);
 
         // *** FIRST BATTLE ***
@@ -97,9 +107,11 @@ int main() {
                                   darkType, noneType,
                                   {tackleMove, howlMove},
                                   "Poochyena", 4, 0);
+        pokedex.add(poochyena.getName(), poochyena);
+        std::cout << "Wild " << poochyena.getName() << " appeared!\n";
 
         bool onRoute = false;
-        if (battle(starter, poochyena)) {
+        if (battle(starter, poochyena, seenMoves)) {
             std::cout << "Do you want to continue exploring Route 101? Y/N \n";
             while (std::cin >> input) {
                 if (input == "Y") {
@@ -119,8 +131,11 @@ int main() {
 
         while (onRoute) {
             pokemon wildPokemon = pokemonFactory::spawn();
+            if (!pokedex.hasSeen(wildPokemon.getName()))
+                pokedex.add(wildPokemon.getName(), wildPokemon);
+            std::cout << "Wild " << wildPokemon.getName() << " appeared!\n";
 
-            if (!battle(starter, wildPokemon))
+            if (!battle(starter, wildPokemon, seenMoves))
                 break;
 
             std::cout << "Do you want to continue exploring Route 101? Y/N \n";
@@ -138,7 +153,27 @@ int main() {
             }
         }
 
-        std::cout << "Total wild Pokemon defeated: " << pokemon::getTotalDefeated() << std::endl << std::endl;
+        // *** GAME STATS ***
+
+        std::cout << "==========================================\n";
+        std::cout << "POKEDEX ENTRIES: \n\n";
+
+        for (const auto& pair : pokedex.getDatabase()) {
+            std::string pokeName = pair.first;
+            std::cout << "> " << pokeName << "\n";
+
+            auto& movesMap = seenMoves.get(pokeName);
+            if (movesMap.empty())
+                std::cout << "      Moves seen: (None)\n";
+            else {
+                std::cout << "      Moves seen:\n";
+                for (const auto& movePair : movesMap)
+                    std::cout << "      - " << movePair.first << "\n";
+            }
+            std::cout << std::endl;
+        }
+        std::cout << "TOTAL WILD POKEMON DEFEATED: " << pokemon::getTotalDefeated() << std::endl;
+        std::cout << "==========================================\n\n";
 
     } catch (const statException& e) {
         std::cerr << "\n[GAME CRASHED] " << e.what() << " Fix the Pokédex data.\n";

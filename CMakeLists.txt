@@ -63,6 +63,7 @@ add_executable(${MAIN_EXECUTABLE_NAME}
         src/rngEngine.cpp
         include/pokemonFactory.h
         src/pokemonFactory.cpp
+        include/registry.h
 )
 target_sources(${MAIN_EXECUTABLE_NAME}
     PRIVATE
