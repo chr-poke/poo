@@ -162,7 +162,7 @@ int main() {
             std::string pokeName = pair.first;
             std::cout << "> " << pokeName << "\n";
 
-            auto& movesMap = seenMoves.get(pokeName);
+            const auto& movesMap = seenMoves.get(pokeName);
             if (movesMap.empty())
                 std::cout << "      Moves seen: (None)\n";
             else {
